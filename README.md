@@ -1,73 +1,91 @@
-# React + TypeScript + Vite
+# Cambodia News Dashboard (React + TypeScript + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains a small News Dashboard built with React, TypeScript, Vite and Tailwind CSS. It provides a UI for browsing, creating, editing, and deleting scraped news articles.
 
-Currently, two official plugins are available:
+The project focuses on accessibility and resilient UI patterns (defensive image handling, consistent card layouts, high-contrast action buttons, and line-clamped text).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech stack
 
-## React Compiler
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- ESLint
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Quick start
 
-## Expanding the ESLint configuration
+Prerequisites: Node.js 18+ and npm (or your preferred package manager).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Install dependencies:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```powershell
+cd d:\cambodia-news-scraper_ui
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Run the dev server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```powershell
+npm run dev
 ```
+
+Build for production:
+
+```powershell
+npm run build
+```
+
+Preview production build locally:
+
+```powershell
+npm run preview
+```
+
+Lint the project:
+
+```powershell
+npm run lint
+```
+
+## Project structure (important files)
+
+- `src/components/articles/ArticleCard.tsx` — News card component. Improved to:
+  - Render a fixed 16:9 media area with a gradient + icon fallback when an image is missing or broken
+  - Show a loading spinner while images load
+  - Clamp title and summary text to keep cards consistent
+  - Use flex layout so all cards in a row share equal height
+  - Provide accessible primary (View) and secondary (Edit/Delete) action styles
+- `src/pages/Dashboard.tsx` — Grid, filters, and pagination
+- `src/pages/ArticleDetails.tsx` — Full article view
+- `src/context/ToastContext.tsx` — Global toast provider
+- `src/types/index.ts` — Article type definitions
+
+## Accessibility & UI notes
+
+- Buttons follow accessible contrast and keyboard focus styles (focus-visible rings).
+- Images use a graceful fallback (gradient + icon) to avoid broken layouts when `img_url` is missing or fails to load.
+- Titles and summaries are line-clamped to avoid uneven card heights.
+- The layout uses `flex` and `mt-auto` for action bar alignment so cards in a grid row remain visually consistent.
+
+## TypeScript notes
+
+- `Article.metadata` uses `Record<string, unknown>` to avoid unsafe `any` usage. When reading `metadata` properties in JSX (for example `base_url`) the code performs a runtime `typeof` check before rendering to satisfy TypeScript's type system.
+
+## Contributing
+
+1. Fork the repo and create a feature branch.
+2. Run the project locally and add tests if applicable.
+3. Open a PR describing your change.
+
+## License
+
+This project is provided as-is. Add your preferred license if you plan to publish it.
+
+---
+
+If you'd like, I can also:
+- Add a short developer checklist (pre-commit hooks, formatting rules)
+- Add a small sample `.env.example` (if external API keys are later needed)
+- Add screenshots and developer run scripts to the README
+
+Tell me which of those you'd like and I will add them.
